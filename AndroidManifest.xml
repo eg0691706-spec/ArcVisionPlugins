@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vision.arc.like"
+    android:versionCode="3"
+    android:versionName="1.0.5"
+    android:compileSdkVersion="34"
+    android:compileSdkVersionCodename="14"
+    platformBuildVersionCode="34"
+    platformBuildVersionName="14">
+
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="34" />
+
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+
+    <application
+        android:name="com.stardust.auojs.inrt.App"
+        android:allowBackup="false"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:icon="@mipmap/ic_launcher"
+        android:label="ARC like"
+        android:supportsRtl="true"
+        android:theme="@style/ScriptTheme"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name="com.stardust.auojs.inrt.SplashActivity"
+            android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:finishOnTaskLaunch="true"
+            android:theme="@style/SplashNoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.stardust.auojs.inrt.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+
+        <activity
+            android:name="com.stardust.auojs.inrt.LogActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.stardust.auojs.inrt.FeatureActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.stardust.auojs.inrt.SettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.stardust.autojs.execution.ScriptExecuteActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|navigation|orientation|screenLayout|screenSize|uiMode"
+            android:exported="false"
+            android:theme="@style/ScriptTheme" />
+
+        <service
+            android:name="com.stardust.autojs.core.accessibility.AccessibilityService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.vision.arc.like.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+    </application>
+</manifest>
+
