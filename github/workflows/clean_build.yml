@@ -1,0 +1,39 @@
+name: Compilar y Limpiar APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar Apktool y Apksigner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apktool apksigner
+
+      - name: Descompilar, purgar y recompilar APK
+        run: |
+          apktool d -f ARC_like.apk -o ProyectoARC
+          rm -f ProyectoARC/assets/*.apk
+          rm -f ProyectoARC/assets/project/*.apk 2>/dev/null || true
+          rm -rf ProyectoARC/lib/x86 ProyectoARC/lib/x86_64
+          cp -f AndroidManifest.xml ProyectoARC/AndroidManifest.xml
+          apktool b ProyectoARC -o ARC_limpia_unsigned.apk
+          keytool -genkeypair -v -keystore mi_clave.keystore -alias mi_alias -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=VisionAccessible"
+          apksigner sign --ks mi_clave.keystore --ks-pass pass:123456 --out ARC_limpia.apk ARC_limpia_unsigned.apk
+
+      - name: Subir APK final optimizada
+        uses: actions/upload-artifact@v4
+        with:
+          name: ARC_limpia_APK
+          path: ARC_limpia.apk
